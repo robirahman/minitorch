@@ -30,7 +30,7 @@ from minitorch import MathTest
 @pytest.mark.task0_1
 @given(small_floats, small_floats)
 def test_same_as_python(x, y):
-    "Check that the main operators all return the same value of the python version"
+    """Check that the main operators all return the same value of the python version"""
     assert_close(mul(x, y), x * y)
     assert_close(add(x, y), x + y)
     assert_close(neg(x), -x)
@@ -101,51 +101,53 @@ def test_sigmoid(a):
     """Check properties of the sigmoid function, specifically
     * It is always between 0.0 and 1.0.
     * one minus sigmoid is the same as negative sigmoid
-    * It crosses 0 at 0.5
+    * It crosses 0.5 at 0
     * it is  strictly increasing.
     """
-    # TODO: Implement for Task 0.2.
-    raise NotImplementedError('Need to implement for Task 0.2')
+    assert(sigmoid(a) >= 0)
+    assert(sigmoid(a) <= 1)
+    assert(
+            ((sigmoid(a) < 0.5) and (a < 0))
+            or ((sigmoid(a) > 0.5) and (a > 0))
+            or ((sigmoid(a) == 0.5) and (a == 0))
+    )
+    assert(sigmoid(a) == 1 - sigmoid(-a))
+    assert(sigmoid(a) < sigmoid(a + 1e-3))
 
 
 @pytest.mark.task0_2
 @given(small_floats, small_floats, small_floats)
 def test_transitive(a, b, c):
-    "Test the transitive property of less-than (a < b and b < c implies a < c)"
-    # TODO: Implement for Task 0.2.
-    raise NotImplementedError('Need to implement for Task 0.2')
+    """Test the transitive property of less-than (a < b and b < c implies a < c)"""
+    # (p->q) = (!p or q)
+    # Not sure if this is right.
+    assert ((a > b) or (b > c) or (a < c))
 
 
 @pytest.mark.task0_2
-def test_symmetric():
+def test_symmetric(x, y):
     """
     Write a test that ensures that :func:`minitorch.operators.mul` is symmetric, i.e.
     gives the same value regardless of the order of its input.
     """
-    None
-    # TODO: Implement for Task 0.2.
-    raise NotImplementedError('Need to implement for Task 0.2')
+    assert mul(x, y) == mul(y, x)
 
 
 @pytest.mark.task0_2
-def test_distribute():
+def test_distribute(x, y, z):
     r"""
     Write a test that ensures that your operators distribute, i.e.
     :math:`z \times (x + y) = z \times x + z \times y`
     """
-    None
-    # TODO: Implement for Task 0.2.
-    raise NotImplementedError('Need to implement for Task 0.2')
+    assert mul(z, x+y) == mul(z, x) + mul(z, y)
 
 
 @pytest.mark.task0_2
-def test_other():
+def test_other(x):
     """
     Write a test that ensures some other property holds for your functions.
     """
-    None
-    # TODO: Implement for Task 0.2.
-    raise NotImplementedError('Need to implement for Task 0.2')
+    assert x == 0 - neg(x)
 
 
 # ## Task 0.3  - Higher-order functions
